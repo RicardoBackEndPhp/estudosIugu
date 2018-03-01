@@ -11,7 +11,7 @@ error_reporting(E_ALL | E_STRICT);
 
 echo "Running iugu PHP Test Suite\r\n";
 
-$apiKey = getenv('IUGU_API_KEY');
+$apiKey = getenv('e13a52d09b9130be7f47819b2df54b8d');
 
 if (!$apiKey) {
     echo 'MISSING IUGU_API_KEY in Environment. $ export IUGU_API_KEY=<{IUGU_API_KEY}>.';
