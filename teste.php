@@ -35,12 +35,12 @@
     //validando número do cartão de ccrretito
     //Iugu.utils.validateCreditCardNumber("4111111111111111"); // Retorna true
     
-    //validando némro de segurança
+    //validando número de segurança
     //Iugu.utils.validateCVV("123", "visa"); // Retorna true
     //Iugu.utils.validateCVV("1234", "amex"); // Retorna true
     //Iugu.utils.validateCVV("3213", "mastercard"); // Retorna false
     
-    //criando um objeto de acrtão de crédito
+    //criando um objeto de cartão de crédito
 //    cc = Iugu.CreditCard("4111111111111111", 
 //                     "12", "2017", "Nome", 
 //                     "Sobrenome", "123");
