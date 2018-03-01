@@ -54,19 +54,28 @@
                 echo "<h4>Falha no cadastro: </h4>";
                 echo $retorno->msgErro;
             }
-        }
-        
-        
-        //teste
-        $customers = Iugur::getInstance();
-        $idIugur = '69595E841715422599DFA9EE7CEF0144';
-        $cliente = $customers->buscaCliente($idIugur,1);
-        
-        echo '<pre>';
-        print_r($cliente);
-        echo '</pre><hr/>';
-        
+        }        
 
+        
+        //////////////////////////////////////////////////
+        //Excluíndo um cliente cadastrado na Iugo
+        //////////////////////////////////////////////////
+        $customers = Iugur::getInstance();
+
+        $idIugur = '891385B2C39F4D16AC523C4EFFD87234';
+        
+        if($customers->excluirCliente($idIugur))
+        {
+            echo "<h5>Cliente excluído com sucesso!</h5>";
+        }
+        else
+        {
+            echo "<h5>Falha ao excluir o cliente</h5>";
+            
+            echo $customers->msgErro;
+        }   
+        
+        
         //////////////////////////////////////////////////
         //Puxando dados do cliente e editando
         //////////////////////////////////////////////////

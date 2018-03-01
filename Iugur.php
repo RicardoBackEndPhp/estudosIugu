@@ -91,6 +91,7 @@ class Iugur
      * ****************************************
      */
     
+    //Cadastrar um cliente na Iugu
     public function criaCliente($vet) 
     {
         /*            
@@ -209,6 +210,21 @@ class Iugur
         }
     }
     
+    //Excluir um cliente na iugu
+    public function excluirCliente($id) 
+    {
+        $customer = Iugu_Customer::fetch($id);
+        if($customer->delete())
+        {
+            return TRUE;
+        }
+        else
+        {
+            //recebendo uma lista de erros encontrados
+            $this->retErro($customer);
+            return FALSE;
+        }
+    }
     
     
     /**
