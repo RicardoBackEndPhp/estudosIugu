@@ -247,6 +247,12 @@ class Iugur
                         "price_cents" = > "1000"
                     )
                 ) ,
+         * se tiver o id do cliente na IUGU
+        
+                "customer_id" => $cliente['id_iugu'] 
+         
+         * se não tiver o id do cliente na IUGU
+         
                 "payer" = > Array(
                     "name" = > "Item Um",
                     "phone_prefix" = > "1",
@@ -269,10 +275,14 @@ class Iugur
         if($resp->success)
         {
             //deu certim
+            //$this->idRetorno = $resp->id; //pegar id  da fatura
+            $this->respRetorno = $resp;
+            return TRUE;
         }
         else
         {
             //errou
+            return FALSE;
         }
     }
     
@@ -290,6 +300,12 @@ class Iugur
                         "price_cents" = > "1000"
                     )
                 ) ,
+         * se tiver o id do cliente na IUGU
+        
+                "customer_id" => $cliente['id_iugu'] 
+         
+         * se não tiver o id do cliente na IUGU
+         
                 "payer" = > Array(
                     "cpf_cnpj" = > "12312312312",
                     "name" = > "Item Um",
@@ -314,10 +330,13 @@ class Iugur
         if($resp->success)
         {
             //deu certim
+            $this->respRetorno = $resp;
+            return TRUE;
         }
         else
         {
             //errou
+            return FALSE;
         }
     }
 }

@@ -15,32 +15,32 @@ function ajaxEnviaPost()
     console.log(queryString);
 
     //AJAX enviando a string formato json
-//    $.post('solicitacaoPagamento', {jsonUP: queryString}, function(data, textStatus, xhr){
-//
-//        if (xhr.status == 200) 
-//        {
-//            //var obj = JSON.parse(data);
-//            console.log(data);
-//        } 
-//        else
-//        {
-//            $.confirm({
-//                title: 'Falha ao consultar!',
-//                content: 'Ocorreu um erro interno no servidor',
-//                type: 'red',
-//                typeAnimated: true,
-//                buttons: {
-//                    tryAgain: {
-//                        text: 'OK',
-//                        btnClass: 'btn-red',
-//                        action: function(){
-//                        }
-//                    }
-//                }
-//            });
-//        }   
-//
-//    });
+    $.post('fatura.php', {jsonUP: queryString}, function(data, textStatus, xhr){
+
+        if (xhr.status == 200) 
+        {
+            //console.log(data);
+            //var obj = JSON.parse(data);
+        } 
+        else
+        {
+            $.confirm({
+                title: 'Falha ao consultar!',
+                content: 'Ocorreu um erro interno no servidor',
+                type: 'red',
+                typeAnimated: true,
+                buttons: {
+                    tryAgain: {
+                        text: 'OK',
+                        btnClass: 'btn-red',
+                        action: function(){
+                        }
+                    }
+                }
+            });
+        }   
+
+    });
 }
 
 //função para pegar o token do cartão de crédito e salva no sessionStorage
@@ -51,6 +51,14 @@ function getTokenCreditCard()
         //caso o pagamento escolhido for cartão, preciso gerar o Token
         if(sessionStorage.tipoPagamento == "Cartão")
         {
+            //setando campos do cartão para gerar o token
+            sessionStorage.cartao_num = "4111111111111111";
+            sessionStorage.cartao_mes = "10";
+            sessionStorage.cartao_ano = "2018";
+            sessionStorage.cartao_nome = "Rogerinho";
+            sessionStorage.cartao_sobrenome = "do Ínga";
+            sessionStorage.cartao_cvv = "411";
+            
             //passar os dados do cartão de crédito aqui
             //seguindo a ordem de parâmetros
             //1 [number] = numero do cartao sem espaço
@@ -59,9 +67,14 @@ function getTokenCreditCard()
             //4 [first_name] = nome do titular
             //5 [last_name] = sobrenome do titular
             //6 [verification_value] = código do cartão CVV (Ex: 372)
-            cc = Iugu.CreditCard("4111111111111111", 
-                             "10", "2018", "Nome", 
-                             "Sobrenome", "45");
+            cc = Iugu.CreditCard(
+                sessionStorage.cartao_num, 
+                sessionStorage.cartao_mes, 
+                sessionStorage.cartao_ano, 
+                sessionStorage.cartao_nome, 
+                sessionStorage.cartao_sobrenome, 
+                sessionStorage.cartao_cvv
+            );
 
             //se não existir o token do cartão na sessionstorage
             if(!sessionStorage.tokenCartaoCredito)
@@ -72,18 +85,17 @@ function getTokenCreditCard()
                         //tratando o erro recebido
                         var errou = erroTokenCc(response.errors);
                         alert(errou);
-                    } else {
-                        //alert("Token criado:" + response.id);
-                        //$("#token").val(response.id);
+                    } 
+                    else {
                         //salvando o token
                         sessionStorage.tokenCartaoCredito = response.id;
-                        //console.log(response.id);
+                        
                         //se existir este token, então manda ajax
                         if (sessionStorage.tokenCartaoCredito)
                         {
-                            //ajaxEnviaPost();
                             console.log('token gerado');
                             $("#token").val( sessionStorage.tokenCartaoCredito );
+                            ajaxEnviaPost();
                         }
                     }   
                 });
@@ -92,10 +104,10 @@ function getTokenCreditCard()
         else
         {
             //se for pelo boleto bancário não é preciso o token
-            //ajaxEnviaPost();
             sessionStorage.removeItem('tokenCartaoCredito');
             console.log('Boleto');
             $("#token").val( 'Boleto' );
+            ajaxEnviaPost();
         }
     }
     else
