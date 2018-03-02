@@ -19,12 +19,12 @@
                 "email" => 'ti@souzanovaes.com.br',
                 "items" => Array(
                     Array(
-                        "description" => 'essa fatura está uma uva'),
+                        "description" => 'essa fatura está uma uva',
                         "quantity" => "1",
                         "price_cents" => 100000
                     )
                 ),
-                "customer_id" => '8AE190271F4849A0A4C9E09AA689D1EB'
+                "customer_id" => '8AE190271F4849A0A4C9E09AA689D1EB' //id do cliente da Iugu
             );
             
             if($fatura->pagamentoCartao($exemplo))

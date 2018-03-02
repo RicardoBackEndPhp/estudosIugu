@@ -275,7 +275,7 @@ class Iugur
         if($resp->success)
         {
             //deu certim
-            //$this->idRetorno = $resp->id; //pegar id  da fatura
+            $this->idRetorno = $resp->account_id; //pegar id  da fatura
             $this->respRetorno = $resp;
             return TRUE;
         }
