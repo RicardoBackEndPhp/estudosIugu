@@ -47,8 +47,8 @@
                 "items" => Array(
                     Array(
                         "description" => 'essa fatura está uma uva',
-                        "quantity" => "1",
-                        "price_cents" => 15500
+                        "quantity" => "2",
+                        "price_cents" => 28000
                     )
                 ),
                 "customer_id" => '544F65FCFAE4482BA15946FF3E282EB9' //id de cliente da Iugu
