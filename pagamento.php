@@ -188,8 +188,8 @@ body { padding: 40px;font-family: Arial;font-size: 14px; background: #FFF }
             evt.preventDefault();
             
             //setando a session manualmente
-            sessionStorage.tipoPagamento = "Cartão";
-            //sessionStorage.tipoPagamento = "Boleto";
+            //sessionStorage.tipoPagamento = "Cartão";
+            sessionStorage.tipoPagamento = "Boleto";
             
             var form = $(this);
             

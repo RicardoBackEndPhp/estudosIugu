@@ -70,7 +70,7 @@
             
             if($fatura->pagamentoBoleto($exemplo))
             {
-                echo "Fatura {$fatura->idRetorno} criada com sucesso!<hr/><pre>";
+                echo "Fatura {$fatura->idRetorno} criada com sucesso!<hr/><h5>clique no botão para acessar seu boleto: <button><a href='{$fatura->respRetorno->url}' target='_blank'>Clique aqui</a></button></h5><pre>";
                 print_r($fatura->respRetorno);
                 echo '</pre>';
             }
