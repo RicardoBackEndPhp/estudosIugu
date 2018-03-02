@@ -1,60 +1,4 @@
 
-<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-<script type="text/javascript" src="https://js.iugu.com/v2"></script>
-
-<script>
-    Iugu.setAccountID("EAD81E94E0F747E1B968F709BC73064B"); //acessando plataforma iugu
-    Iugu.setTestMode(true); //ativando modo de teste
-    //Iugu.setup();
-    
-    
-    
-    jQuery(function($) {
-        $('#payment-form').submit(function(evt) {
-            var form = $(this);
-            var tokenResponseHandler = function(data) {
-
-                if (data.errors) {
-                    alert("Erro salvando cartão: " + JSON.stringify(data.errors));
-                } else {
-                    console.log(data);
-                    $("#token").val( data.id );
-                    form.get(0).submit();
-                }
-
-                // Seu código para continuar a submissão
-                // Ex: form.submit();
-            }
-
-            Iugu.createPaymentToken(this, tokenResponseHandler);
-            return false;
-        });
-    });
-    
-    
-    //validando número do cartão de ccrretito
-    //Iugu.utils.validateCreditCardNumber("4111111111111111"); // Retorna true
-    
-    //validando número de segurança
-    //Iugu.utils.validateCVV("123", "visa"); // Retorna true
-    //Iugu.utils.validateCVV("1234", "amex"); // Retorna true
-    //Iugu.utils.validateCVV("3213", "mastercard"); // Retorna false
-    
-    //criando um objeto de cartão de crédito
-//    cc = Iugu.CreditCard("4111111111111111", 
-//                     "12", "2017", "Nome", 
-//                     "Sobrenome", "123");
-//                     
-//    Iugu.createPaymentToken(cc, function(response) {
-//        if (response.errors) {
-//                alert("Erro salvando cartão");
-//        } else {
-//                alert("Token criado:" + response.id);
-//        }	
-//    });
-                     
-</script>
-
 <style>
     /* Non Credit Card Form */
 body,html { padding:0px;margin:0px; }
@@ -226,33 +170,85 @@ body { padding: 40px;font-family: Arial;font-size: 14px; background: #FFF }
 }
 </style>
 
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="https://js.iugu.com/v2"></script>
+<script type="text/javascript" src="iugu.js"></script>
+
+<script>
+    Iugu.setAccountID("EAD81E94E0F747E1B968F709BC73064B"); //acessando plataforma iugu
+    Iugu.setTestMode(true); //ativando modo de teste
+    //Iugu.setup();
+    
+    
+    jQuery(function($) {
+        
+        //submit do formulário
+        $('#payment-form').submit(function(evt) {
+            
+            evt.preventDefault();
+            
+            //setando a session manualmente
+            sessionStorage.tipoPagamento = "Cartão";
+            //sessionStorage.tipoPagamento = "Boleto";
+            
+            var form = $(this);
+            
+            getTokenCreditCard();
+            
+        });
+    });
+    
+    
+    //validando número do cartão de ccrretito
+    //Iugu.utils.validateCreditCardNumber("4111111111111111"); // Retorna true
+    
+    //validando número de segurança
+    //Iugu.utils.validateCVV("123", "visa"); // Retorna true
+    //Iugu.utils.validateCVV("1234", "amex"); // Retorna true
+    //Iugu.utils.validateCVV("3213", "mastercard"); // Retorna false
+    
+    //criando um objeto de cartão de crédito
+//    cc = Iugu.CreditCard("4111111111111111", 
+//                     "12", "2017", "Nome", 
+//                     "Sobrenome", "123");
+//                     
+//    Iugu.createPaymentToken(cc, function(response) {
+//        if (response.errors) {
+//                alert("Erro salvando cartão");
+//        } else {
+//                alert("Token criado:" + response.id);
+//        }	
+//    });
+                     
+</script>
+
 <hr/>
 
 
 <form id="payment-form" target="_blank" action="https://<-- seu servico -->" method="POST">
     <div class="usable-creditcard-form">
-      <div class="wrapper">
-        <div class="input-group nmb_a">
-          <div class="icon ccic-brand"></div>
-            <input autocomplete="off" class="credit_card_number" data-iugu="number" placeholder="Número do Cartão" type="text" value="" />
-          </div>
-        <div class="input-group nmb_b">
-          <div class="icon ccic-cvv"></div>
-            <input autocomplete="off" class="credit_card_cvv" data-iugu="verification_value" placeholder="CVV" type="text" value="" />
+        <div class="wrapper">
+            <div class="input-group nmb_a">
+                <div class="icon ccic-brand"></div>
+                  <input autocomplete="off" class="credit_card_number" data-iugu="number" placeholder="Número do Cartão" type="text" value="" />
+            </div>
+            <div class="input-group nmb_b">
+                <div class="icon ccic-cvv"></div>
+                <input autocomplete="off" class="credit_card_cvv" data-iugu="verification_value" placeholder="CVV" type="text" value="" />
+            </div>
+            <div class="input-group nmb_c">
+                <div class="icon ccic-name"></div>
+                <input class="credit_card_name" data-iugu="full_name" placeholder="Titular do Cartão" type="text" value="" />
+            </div>
+            <div class="input-group nmb_d">
+                <div class="icon ccic-exp"></div>
+                <input autocomplete="off" class="credit_card_expiration" data-iugu="expiration" placeholder="MM/AA" type="text" value="" />
+            </div>
         </div>
-        <div class="input-group nmb_c">
-          <div class="icon ccic-name"></div>
-            <input class="credit_card_name" data-iugu="full_name" placeholder="Titular do Cartão" type="text" value="" />
+        <div class="footer">
+            <img src="http://storage.pupui.com.br/9CA0F40E971643D1B7C8DE46BBC18396/assets/cc-icons.e8f4c6b4db3cc0869fa93ad535acbfe7.png" alt="Visa, Master, Diners. Amex" border="0" />
+            <a class="iugu-btn" href="http://iugu.com" tabindex="-1"><img src="http://storage.pupui.com.br/9CA0F40E971643D1B7C8DE46BBC18396/assets/payments-by-iugu.1df7caaf6958f1b5774579fa807b5e7f.png" alt="Pagamentos por Iugu" border="0" /></a>
         </div>
-        <div class="input-group nmb_d">
-          <div class="icon ccic-exp"></div>
-            <input autocomplete="off" class="credit_card_expiration" data-iugu="expiration" placeholder="MM/AA" type="text" value="" />
-        </div>
-      </div>
-      <div class="footer">
-        <img src="http://storage.pupui.com.br/9CA0F40E971643D1B7C8DE46BBC18396/assets/cc-icons.e8f4c6b4db3cc0869fa93ad535acbfe7.png" alt="Visa, Master, Diners. Amex" border="0" />
-        <a class="iugu-btn" href="http://iugu.com" tabindex="-1"><img src="http://storage.pupui.com.br/9CA0F40E971643D1B7C8DE46BBC18396/assets/payments-by-iugu.1df7caaf6958f1b5774579fa807b5e7f.png" alt="Pagamentos por Iugu" border="0" /></a>
-      </div>
     </div>
 
     <div class="token-area">

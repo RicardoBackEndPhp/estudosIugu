@@ -60,7 +60,7 @@ class Connect
         return $access->fetchAll();
     }
     
-    
+    //salva os dados do cliente no nosso banco de dados
     public function salvaClienteIugu($vet) 
     {
         $query = "INSERT INTO teste_cliente_iugu (email,nome,cpf_cnpj,zip_code,number,street,city,state,district,complement,id_iugu) VALUES (:email,:nome,:cpf,:cep,:num,:rua,:cidade,:uf,:bairro,:complemento,:idiugu)";
@@ -89,5 +89,17 @@ class Connect
         }
     }
     
-
+    
+    //pega o id da iugu
+    public function dadosCliente($id) 
+    {
+        $query = "SELECT * FROM teste_cliente_iugu WHERE id = :id ";
+        
+        $puxa = $this->pdo->prepare($query);
+        $puxa->bindValue(':id', $id, PDO::PARAM_INT);
+        $puxa->execute();
+        
+        return $puxa->fetch();
+    }
+    
 }
