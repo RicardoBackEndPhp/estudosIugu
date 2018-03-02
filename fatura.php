@@ -8,7 +8,7 @@
     
     if(!empty($dados))
     {
-        print_r($dados);
+        //print_r($dados);
         
         $fatura = Iugur::getInstance();
         
@@ -21,19 +21,21 @@
                     Array(
                         "description" => 'essa fatura está uma uva',
                         "quantity" => "1",
-                        "price_cents" => 100000
+                        "price_cents" => 15500
                     )
                 ),
-                "customer_id" => '8AE190271F4849A0A4C9E09AA689D1EB' //id do cliente da Iugu
+                "customer_id" => '544F65FCFAE4482BA15946FF3E282EB9' //id do cliente da Iugu
             );
             
             if($fatura->pagamentoCartao($exemplo))
             {
-                var_dump($fatura->respRetorno);
+                echo "Fatura {$fatura->idRetorno} criada com sucesso!<hr/><pre>";
+                print_r($fatura->respRetorno);
+                echo '</pre>';
             }
             else 
             {
-                echo 'Falha ao gerar a fatura.';
+                echo 'Falha ao gerar a fatura do cartão.<br/>'.$fatura->msgErro;
             }
         }
         else
@@ -41,15 +43,15 @@
             //quando o cliente já se encontra cadastrado na Iugu
             $exemplo = Array(
                 "method" => "bank_slip",
-                "email" => $cliente['email'],
+                "email" => 'ti@souzanovaes.com.br',
                 "items" => Array(
                     Array(
-                        "description" => utf8_encode($servico['tipo']),
+                        "description" => 'essa fatura está uma uva',
                         "quantity" => "1",
-                        "price_cents" => $valorServico
+                        "price_cents" => 15500
                     )
                 ),
-                "customer_id" => $cliente['id_iugu'] //id de cliente da Iugu
+                "customer_id" => '544F65FCFAE4482BA15946FF3E282EB9' //id de cliente da Iugu
             );
             
             //fatura simples da iugu
@@ -68,11 +70,13 @@
             
             if($fatura->pagamentoBoleto($exemplo))
             {
-                var_dump($fatura->respRetorno);
+                echo "Fatura {$fatura->idRetorno} criada com sucesso!<hr/><pre>";
+                print_r($fatura->respRetorno);
+                echo '</pre>';
             }
             else 
             {
-                echo 'Falha ao gerar a fatura.';
+                echo 'Falha ao gerar a fatura.<br/>'.$fatura->msgErro;
             }
         }
     }

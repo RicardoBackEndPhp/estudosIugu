@@ -19,8 +19,10 @@ function ajaxEnviaPost()
 
         if (xhr.status == 200) 
         {
-            //console.log(data);
+            console.log(data);
             //var obj = JSON.parse(data);
+            
+            $("#respay").html(data);
         } 
         else
         {
