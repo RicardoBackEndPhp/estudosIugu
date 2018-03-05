@@ -342,4 +342,27 @@ class Iugur
             return FALSE;
         }
     }
+    
+    //removendo uma fatura
+    public function cancelaFatura($idFatura) 
+    {
+        $invoice = Iugu_Invoice::fetch($idFatura);
+        $invoice->cancel();
+        return $invoice;
+    }
+    
+    //reembolsar uma fatura
+    public function reembolso($idFatura) 
+    {
+        $invoice = Iugu_Invoice::fetch($idFatura);
+        $invoice->refund();
+        return $invoice;
+    }
+    
+    //Listar faturas
+    public function listaFaturas() 
+    {
+        $invoices = Iugu_Invoice::search()->results();
+        return $invoices;
+    }
 }

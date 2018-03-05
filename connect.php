@@ -91,15 +91,69 @@ class Connect
     
     
     //pega o id da iugu
-    public function dadosCliente($id) 
+    public function dadosCliente($id, $select = 0) 
     {
-        $query = "SELECT * FROM teste_cliente_iugu WHERE id = :id ";
+        if($id == 'all')
+        {
+            $query = "SELECT * FROM teste_cliente_iugu";
         
-        $puxa = $this->pdo->prepare($query);
-        $puxa->bindValue(':id', $id, PDO::PARAM_INT);
+            $puxa = $this->pdo->prepare($query);
+        }
+        else
+        {
+            $query = "SELECT * FROM teste_cliente_iugu WHERE id = :id ";
+        
+            $puxa = $this->pdo->prepare($query);
+            $puxa->bindValue(':id', $id, PDO::PARAM_INT);
+        }
+        
         $puxa->execute();
         
-        return $puxa->fetch();
+        $sele = "<option value=''>Selecione...</option>";
+        
+        if($puxa->rowCount()> 0)
+        {
+            $rsp = $puxa->fetchAll();
+            
+            foreach ($rsp as $value) 
+            {
+                $sele .= "<option class='cli' data-identificador='".$value['id']."' value='".$value['id_iugu']."'>{$value['nome']}</option>";
+            }
+        }
+        
+        if(empty($select))
+        {
+            return $puxa->fetch();
+        }
+        else
+        {
+            return $sele;
+        }
+    }
+    
+    
+    //salva o id de fatura que vem da Iugu e cria um serviço na tabela
+    public function criaFatura($idC, $idF) 
+    {
+        $query = "INSERT INTO teste_servico_iugu SET 
+                    id_cliente = :idCli,
+                    tipo       = 'certidao',
+                    id_fatura  = :idF
+        ";
+        
+        $fatura = $this->pdo->prepare($query);
+        $fatura->bindValue(':idCli', $idC);
+        $fatura->bindValue(':idF', $idF);
+        $fatura->execute();
+        
+        if($fatura->rowCount() > 0)
+        {
+            return TRUE;
+        }
+        else
+        {
+            return FALSE;
+        }
     }
     
 }

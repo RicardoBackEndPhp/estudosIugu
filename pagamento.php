@@ -187,11 +187,50 @@ body { padding: 40px;font-family: Arial;font-size: 14px; background: #FFF }
             
             evt.preventDefault();
             
+            //dados do usuário
+            
+            
+            var expir = $("#cart_data").val().split("/");                   
+            sessionStorage.cartao_mes = expir[0]; //"10";
+            sessionStorage.cartao_ano = expir[1]; //"2018";
+            
+            
+            //setando campos do cartão para gerar o token
+            sessionStorage.cartao_num = $("#cart_numero").val();   //"4111111111111111";
+            sessionStorage.cartao_cvv = $("#cart_cvv").val(); //"411";
+            
+            
+            SeparaNS($("#cart_nome").val());
+            
             //setando a session manualmente
             //sessionStorage.tipoPagamento = "Cartão";
-            sessionStorage.tipoPagamento = "Boleto";
+            //sessionStorage.tipoPagamento = "Boleto";
             
-            var form = $(this);
+            if($("input[name='cart_tipo']:checked").val() == 1)
+            {
+                sessionStorage.tipoPagamento = "Boleto";
+            }
+            else
+            {
+                sessionStorage.tipoPagamento = "Cartão";
+            }
+            
+            
+            var chaveClienteIugu = $("#cart_cliente").val();
+            
+            var idCliente;
+            var nomeCliente;
+            
+            $( "#cart_cliente option:selected" ).each(function() {
+                idCliente = $( this ).attr('data-identificador');
+                nomeCliente = $( this ).text();
+            });
+            
+            sessionStorage.chaveClienteIugu = chaveClienteIugu;   //Id do cliente na iugu
+            sessionStorage.idCliente        = idCliente;         // id do cliente no meu sistema
+            sessionStorage.nomeCliente      = nomeCliente;      // nome do cliente no meu sistema
+            
+            //console.log("Chave: "+chaveClienteIugu+" Id: "+idCliente+" Nome: "+nomeCliente); //teste
             
             getTokenCreditCard();
             
@@ -224,25 +263,43 @@ body { padding: 40px;font-family: Arial;font-size: 14px; background: #FFF }
 
 <hr/>
 
+<?php 
+    require_once './connect.php';
+    
+    $sel = Connect::getInstance();
+            
+    $select = $sel->dadosCliente('all', 1);
+?>
 
 <form id="payment-form" target="_blank" action="https://<-- seu servico -->" method="POST">
-    <div class="usable-creditcard-form">
+    
+    <label>Serviço: </label>
+        <input type="radio" class="cart_tipo" name="cart_tipo" id="bol" value="1"><label for="bol">Boleto</label>
+        <input type="radio" class="cart_tipo" name="cart_tipo" id="cc" value="2" checked=""><label for="cc">Cartão de Crédito</label>
+    <br><br>
+    <select id="cart_cliente" name="cart_cliente">
+        <?php 
+            echo $select;
+        ?>
+    </select>
+    <br/><br/>
+    <div class="usable-creditcard-form">            
         <div class="wrapper">
             <div class="input-group nmb_a">
                 <div class="icon ccic-brand"></div>
-                  <input autocomplete="off" class="credit_card_number" data-iugu="number" placeholder="Número do Cartão" type="text" value="" />
+                <input autocomplete="off" class="credit_card_number" name="cart_numero" id="cart_numero" data-iugu="number" placeholder="Número do Cartão" type="text" value="" />
             </div>
             <div class="input-group nmb_b">
                 <div class="icon ccic-cvv"></div>
-                <input autocomplete="off" class="credit_card_cvv" data-iugu="verification_value" placeholder="CVV" type="text" value="" />
+                <input autocomplete="off" class="credit_card_cvv" name="cart_cvv" id="cart_cvv" data-iugu="verification_value" placeholder="CVV" type="text" value="" />
             </div>
             <div class="input-group nmb_c">
                 <div class="icon ccic-name"></div>
-                <input class="credit_card_name" data-iugu="full_name" placeholder="Titular do Cartão" type="text" value="" />
+                <input class="credit_card_name" data-iugu="full_name" name="cart_nome" id="cart_nome" placeholder="Titular do Cartão" type="text" value="" />
             </div>
             <div class="input-group nmb_d">
                 <div class="icon ccic-exp"></div>
-                <input autocomplete="off" class="credit_card_expiration" data-iugu="expiration" placeholder="MM/AA" type="text" value="" />
+                <input autocomplete="off" class="credit_card_expiration" name="cart_data" id="cart_data" data-iugu="expiration" placeholder="MM/AA" type="text" value="" />
             </div>
         </div>
         <div class="footer">
@@ -253,7 +310,7 @@ body { padding: 40px;font-family: Arial;font-size: 14px; background: #FFF }
 
     <div class="token-area">
         <label for="token">Token do Cartão de Crédito - Enviar para seu Servidor</label>
-        <input type="text" name="token" id="token" value="" readonly="true" size="64" style="text-align:center" />
+        <input type="text" name="token" id="token" value="" readonly="" size="64" style="text-align:center" />
     </div>
        
     <div>

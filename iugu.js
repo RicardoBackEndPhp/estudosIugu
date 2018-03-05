@@ -4,7 +4,22 @@
  * and open the template in the editor.
  */
 
+//separa nome de sobrenome
+function SeparaNS(nomeCompleto) 
+{
+    var valor     = nomeCompleto.split(" ");
+    var nome      = valor.shift();
+    var sobrenome = valor.join(" ");
 
+    //alert("O nome é : " + nome);
+    //alert("O sobrenome é : " + sobrenome);
+    
+    sessionStorage.cartao_nome = nome;
+    sessionStorage.cartao_sobrenome = sobrenome;
+}
+
+
+//Ajax que manda informações para criação de fatura
 function ajaxEnviaPost()
 {
     console.log(sessionStorage);
@@ -52,15 +67,7 @@ function getTokenCreditCard()
     {
         //caso o pagamento escolhido for cartão, preciso gerar o Token
         if(sessionStorage.tipoPagamento == "Cartão")
-        {
-            //setando campos do cartão para gerar o token
-            sessionStorage.cartao_num = "4111111111111111";
-            sessionStorage.cartao_mes = "10";
-            sessionStorage.cartao_ano = "2018";
-            sessionStorage.cartao_nome = "Rogerinho";
-            sessionStorage.cartao_sobrenome = "do Ínga";
-            sessionStorage.cartao_cvv = "411";
-            
+        {            
             //passar os dados do cartão de crédito aqui
             //seguindo a ordem de parâmetros
             //1 [number] = numero do cartao sem espaço
@@ -86,7 +93,8 @@ function getTokenCreditCard()
                     if (response.errors) {
                         //tratando o erro recebido
                         var errou = erroTokenCc(response.errors);
-                        alert(errou);
+                        console.log(errou);
+                        $("#respay").html(errou);
                     } 
                     else {
                         //salvando o token
@@ -103,13 +111,17 @@ function getTokenCreditCard()
                 });
             }
         }
-        else
+        else if(sessionStorage.tipoPagamento == "Boleto")
         {
             //se for pelo boleto bancário não é preciso o token
             sessionStorage.removeItem('tokenCartaoCredito');
             console.log('Boleto');
             $("#token").val( 'Boleto' );
             ajaxEnviaPost();
+        }
+        else
+        {
+            alert('Falha ao consultar! Tipo de pagamento não identificado');
         }
     }
     else
@@ -132,9 +144,10 @@ function getTokenCreditCard()
     }
 }
 
+//método para mostrar de maneira decente o erro da Api da Iugu
 function erroTokenCc(obj)
 {
-     //1 [number] = numero do cartao sem espaço
+    //1 [number] = numero do cartao sem espaço
     //2 [expiration] = mês de vencimento (Ex: 05)
     //3 [expiration] = ano de vencimento (Ex: 2021)
     //4 [first_name] = nome do titular
@@ -149,11 +162,33 @@ function erroTokenCc(obj)
         verification_value:"Número de segurança inválido"
     };
     
-    var chave;
+    var resp = "<ul>";
     
     Object.keys(obj).forEach(function(key) {
-        chave = key;
+        resp += "<li>"+person[key]+"</li>";
     });
+    resp += "</ul>";
     
-    return person[chave];
+    return resp;
 }
+
+
+/////////////////////////////////////////////////////////
+//    Gestão e modificações das faturas
+/////////////////////////////////////////////////////////
+
+function cancelaFatura(id)
+{
+    
+}
+
+function reembolsaFatura(id)
+{
+    
+}
+
+function listaFatura()
+{
+    
+}
+

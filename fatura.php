@@ -4,9 +4,12 @@
     require_once './connect.php';
     require_once './Iugur.php';
     
-    $dados = isset($_POST['jsonUP'])? (array) json_decode($_POST['jsonUP']):'';
+    $dados = isset($_POST['jsonUP'])? json_decode($_POST['jsonUP']):'';
     
-    if(!empty($dados))
+    print_r($dados);
+    
+
+    if(!empty($dados) && is_object($dados))
     {
         //print_r($dados);
         
@@ -16,15 +19,22 @@
         {
             $exemplo = Array(
                 "token"=> $dados->tokenCartaoCredito,
-                "email" => 'ti@souzanovaes.com.br',
+                "email" => 'malandrodeborest@gmail.com', //E-mail do cliente
+                //"months" => 6, //(opcional) Número de Parcelas (2 até 12), não é necessário passar 1
+                "discount_cents" => 1000, //(opcional) Valor dos Descontos em centavos.
                 "items" => Array(
                     Array(
-                        "description" => 'essa fatura está uma uva',
-                        "quantity" => "1",
-                        "price_cents" => 15500
+                        "description" => 'Certidão de casamento', //Descrição do Item
+                        "quantity" => "1", //	Quantidade
+                        "price_cents" => 25500, //Preço em Centavos. Valores negativos entram como desconto no total
+                    ),
+                    Array(
+                        "description" => 'Apostilamento de Haia', //Descrição do Item
+                        "quantity" => "1", //	Quantidade
+                        "price_cents" => 20500, //Preço em Centavos. Valores negativos entram como desconto no total
                     )
                 ),
-                "customer_id" => '544F65FCFAE4482BA15946FF3E282EB9' //id do cliente da Iugu
+                "customer_id" => $dados->chaveClienteIugu //'544F65FCFAE4482BA15946FF3E282EB9' //id do cliente da Iugu
             );
             
             if($fatura->pagamentoCartao($exemplo))
@@ -38,20 +48,22 @@
                 echo 'Falha ao gerar a fatura do cartão.<br/>'.$fatura->msgErro;
             }
         }
-        else
+        else //Boleto
         {
             //quando o cliente já se encontra cadastrado na Iugu
             $exemplo = Array(
-                "method" => "bank_slip",
-                "email" => 'ti@souzanovaes.com.br',
+                "method" => "bank_slip", //método de pagamento com boleto direto
+                "email" => 'malandrodeborest@gmail.com',  //E-mail do cliente
+                "discount_cents  " => 1000, //(opcional) Valor dos Descontos em centavos.
+                "bank_slip_extra_days   " => 15, //(opcional) Define o prazo em dias para o pagamento do boleto. Caso não seja enviado, aplica-se o prazo padrão de 3 dias.
                 "items" => Array(
                     Array(
-                        "description" => 'essa fatura está uma uva',
-                        "quantity" => "2",
+                        "description" => 'Certidão de nascimento',
+                        "quantity" => "1",
                         "price_cents" => 28000
                     )
                 ),
-                "customer_id" => '544F65FCFAE4482BA15946FF3E282EB9' //id de cliente da Iugu
+                "customer_id" => $dados->chaveClienteIugu //'544F65FCFAE4482BA15946FF3E282EB9' //id de cliente da Iugu Renan
             );
             
             //fatura simples da iugu
