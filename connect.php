@@ -133,16 +133,17 @@ class Connect
     
     
     //salva o id de fatura que vem da Iugu e cria um serviço na tabela
-    public function criaFatura($idC, $idF) 
+    public function criaFatura($idC, $idF, $tipo) 
     {
         $query = "INSERT INTO teste_servico_iugu SET 
                     id_cliente = :idCli,
-                    tipo       = 'certidao',
+                    tipo       = :tipo,
                     id_fatura  = :idF
         ";
         
         $fatura = $this->pdo->prepare($query);
         $fatura->bindValue(':idCli', $idC);
+        $fatura->bindValue(':tipo', $tipo);
         $fatura->bindValue(':idF', $idF);
         $fatura->execute();
         

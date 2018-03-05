@@ -42,6 +42,9 @@
                 echo "Fatura {$fatura->idRetorno} criada com sucesso!<hr/><pre>";
                 print_r($fatura->respRetorno);
                 echo '</pre>';
+                
+                $db = Connect::getInstance();
+                $db->criaFatura($dados->idCliente, $fatura->idRetorno, $dados->tipoPagamento);
             }
             else 
             {
@@ -54,13 +57,13 @@
             $exemplo = Array(
                 "method" => "bank_slip", //método de pagamento com boleto direto
                 "email" => 'malandrodeborest@gmail.com',  //E-mail do cliente
-                "discount_cents  " => 1000, //(opcional) Valor dos Descontos em centavos.
-                "bank_slip_extra_days   " => 15, //(opcional) Define o prazo em dias para o pagamento do boleto. Caso não seja enviado, aplica-se o prazo padrão de 3 dias.
+                "discount_cents" => 500, //(opcional) Valor dos Descontos em centavos.
+                "bank_slip_extra_days" => 15, //(opcional) Define o prazo em dias para o pagamento do boleto. Caso não seja enviado, aplica-se o prazo padrão de 3 dias.
                 "items" => Array(
                     Array(
                         "description" => 'Certidão de nascimento',
                         "quantity" => "1",
-                        "price_cents" => 28000
+                        "price_cents" => 28700
                     )
                 ),
                 "customer_id" => $dados->chaveClienteIugu //'544F65FCFAE4482BA15946FF3E282EB9' //id de cliente da Iugu Renan
@@ -85,6 +88,9 @@
                 echo "Fatura {$fatura->idRetorno} criada com sucesso!<hr/><h5>clique no botão para acessar seu boleto: <button><a href='{$fatura->respRetorno->url}' target='_blank'>Clique aqui</a></button></h5><pre>";
                 print_r($fatura->respRetorno);
                 echo '</pre>';
+                
+                $db = Connect::getInstance();
+                $db->criaFatura($dados->idCliente, $fatura->idRetorno, $dados->tipoPagamento);
             }
             else 
             {
