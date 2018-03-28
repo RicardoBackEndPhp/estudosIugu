@@ -365,4 +365,11 @@ class Iugur
         $invoices = Iugu_Invoice::search()->results();
         return $invoices;
     }
+    
+    //Buscar faturas
+    public function buscaFaturas($idFatura) //ex:"AE27126C4B8A4C79859B29CD210BA58F"
+    {
+        $invoices = Iugu_Invoice::fetch($idFatura);
+        return $invoices;
+    }
 }
