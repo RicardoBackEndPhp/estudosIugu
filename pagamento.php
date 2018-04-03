@@ -189,7 +189,7 @@ body { padding: 40px;font-family: Arial;font-size: 14px; background: #FFF }
             
             //dados do usuário
             
-            
+            //recebendo e "explodindo" o valor de data do cartão
             var expir = $("#cart_data").val().split("/");                   
             sessionStorage.cartao_mes = expir[0]; //"10";
             sessionStorage.cartao_ano = expir[1]; //"2018";
@@ -199,7 +199,8 @@ body { padding: 40px;font-family: Arial;font-size: 14px; background: #FFF }
             sessionStorage.cartao_num = $("#cart_numero").val();   //"4111111111111111";
             sessionStorage.cartao_cvv = $("#cart_cvv").val(); //"411";
             
-            
+            //função que recebe o nome completo, separa nome de sobrenome
+            // e já insere na sessionStorage
             SeparaNS($("#cart_nome").val());
             
             //setando a session manualmente
@@ -215,23 +216,28 @@ body { padding: 40px;font-family: Arial;font-size: 14px; background: #FFF }
                 sessionStorage.tipoPagamento = "Cartão";
             }
             
-            
+            //id de cliente da IUGU, caso o usuário já esteja cadastrado
             var chaveClienteIugu = $("#cart_cliente").val();
             
             var idCliente;
             var nomeCliente;
             
+            //Gambiarra para pegar o id (banco de dados interno) e nome do usuário
             $( "#cart_cliente option:selected" ).each(function() {
                 idCliente = $( this ).attr('data-identificador');
                 nomeCliente = $( this ).text();
             });
             
+            //salvando os dados na sessionStorage
             sessionStorage.chaveClienteIugu = chaveClienteIugu;   //Id do cliente na iugu
             sessionStorage.idCliente        = idCliente;         // id do cliente no meu sistema
             sessionStorage.nomeCliente      = nomeCliente;      // nome do cliente no meu sistema
             
             //console.log("Chave: "+chaveClienteIugu+" Id: "+idCliente+" Nome: "+nomeCliente); //teste
             
+            //função que confere os dados da session
+            //gera o token
+            //e manda os dados para o arquivo "fatura.php" via ajax (POST)
             getTokenCreditCard();
             
         });

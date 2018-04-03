@@ -14,7 +14,8 @@ class Connect
     protected $pdo;
 
 
-    protected function __construct() {
+    protected function __construct() 
+    {
         
         try 
         {

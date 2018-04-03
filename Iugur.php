@@ -17,7 +17,8 @@ class Iugur
     
 
 
-    protected function __construct() {
+    protected function __construct() 
+    {
         require_once './lib/Iugu.php';
         
         //setando o ApiKey do qual pega na plataforma da iugu
@@ -27,6 +28,7 @@ class Iugur
     protected function __clone() {}
 		
     
+    //ignore
     public function curl($args) 
     {
         //argumentos
