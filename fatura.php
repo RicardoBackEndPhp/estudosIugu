@@ -13,10 +13,12 @@
     {
         //print_r($dados);
         
+        //instancia do objeto IUGU R
         $fatura = Iugur::getInstance();
         
-        if(!empty($dados->tokenCartaoCredito)) //cartão de credito
+        if(!empty($dados->tokenCartaoCredito)) //Token do cartão de credito
         {
+            //montando array com dados do cliente
             $exemplo = Array(
                 "token"=> $dados->tokenCartaoCredito,
                 "email" => 'malandrodeborest@gmail.com', //E-mail do cliente

@@ -27,10 +27,11 @@ function ajaxEnviaPost()
     //transformando o sessionStorage em string formato json
     var queryString = JSON.stringify(sessionStorage);
 
-    console.log(queryString);
+    //console.log(queryString);
 
     //AJAX enviando a string formato json
-    $.post('fatura.php', {jsonUP: queryString}, function(data, textStatus, xhr){
+    $.post('fatura.php', {jsonUP: queryString}, function(data, textStatus, xhr)
+    {
 
         if (xhr.status == 200) 
         {
@@ -56,7 +57,6 @@ function ajaxEnviaPost()
                 }
             });
         }   
-
     });
 }
 
