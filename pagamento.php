@@ -180,16 +180,19 @@ body { padding: 40px;font-family: Arial;font-size: 14px; background: #FFF }
     //Iugu.setup();
     
     
-    jQuery(function($) {
+    jQuery(function($) 
+    {
         
-        //submit do formulário
+        //Submit do formulário
+        //Aqui começa a parte de Pagamento, assim que o usuário preenche os dados e clica no botão
         $('#payment-form').submit(function(evt) {
             
+            //trava a atualização da página, no caso não redireciona para  a "action"
             evt.preventDefault();
             
             //dados do usuário
             
-            //recebendo e "explodindo" o valor de data do cartão
+            //recebendo e "explodindo" o valor de data do cartão, para separar mês e ano
             var expir = $("#cart_data").val().split("/");                   
             sessionStorage.cartao_mes = expir[0]; //"10";
             sessionStorage.cartao_ano = expir[1]; //"2018";
@@ -222,7 +225,7 @@ body { padding: 40px;font-family: Arial;font-size: 14px; background: #FFF }
             var idCliente;
             var nomeCliente;
             
-            //Gambiarra para pegar o id (banco de dados interno) e nome do usuário
+            //Gambiarra para pegar o id (banco de dados interno) e nome do usuário no select
             $( "#cart_cliente option:selected" ).each(function() {
                 idCliente = $( this ).attr('data-identificador');
                 nomeCliente = $( this ).text();
